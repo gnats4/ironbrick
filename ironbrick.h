@@ -1,5 +1,5 @@
-#ifndef Ironbrick_h 
-#define Ironbrick_h	
+#ifndef ironbrick_h 
+#define ironbrick_h	
 		
 
 class IronbrickClass{ 
@@ -17,5 +17,5 @@ class IronbrickClass{
 
 
 
-extern IronbrickClass Ironbrick; 
+extern IronbrickClass ironbrick; 
 #endif

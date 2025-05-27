@@ -12,7 +12,7 @@ class IronbrickClass{
 		void Left(byte speed, int time);
                 void StopMotors(int time);
 		void ArcTurn(byte LeftSpeed, byte RightSpeed, int Time);
-                void MotorControl(int LeftSpeed, int RightSpeed);
+                void MotorControl(int LeftSpeed, int RightSpeed, int Time);
 };
 
 

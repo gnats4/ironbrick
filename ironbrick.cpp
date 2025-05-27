@@ -98,35 +98,20 @@ void IronbrickClass::ArcTurn(byte LeftSpeed, byte RightSpeed, int Time){
 	
 }
 
-void IronbrickClass::MotorControl(float LeftMotorPower, float RightMotorPower, int Time) {
-  int RightMotorPwm = abs(RightMotorPower * 2.55);
-  int LeftMotorPwm = abs(LeftMotorPower * 2.55);
+void IronbrickClass::MotorControl(float LeftSpeed, float RightSpeed, int Time) {
+  int LeftPwm = abs(LeftSpeed * 2.55);
+  int RightPwm = abs(RightSpeed * 2.55);
 
-  if (RightMotorPower > 0) {
-    digitalWrite(R_IN1, HIGH);
-    digitalWrite(R_IN2, LOW);
-    analogWrite(R_PWM, RightMotorPwm);
-  } 
-  else if (RightMotorPower < 0) {
-    digitalWrite(R_IN1, LOW);
-    digitalWrite(R_IN2, HIGH);
-    analogWrite(R_PWM, RightMotorPwm);
-  } 
-  else {
-    digitalWrite(R_IN1, HIGH);
-    digitalWrite(R_IN2, HIGH);
-    analogWrite(R_PWM, 0);
-  }
-
-  if (LeftMotorPower > 0) {
+  // Left motor direction and speed
+  if (LeftSpeed > 0) {
     digitalWrite(L_IN1, HIGH);
     digitalWrite(L_IN2, LOW);
-    analogWrite(L_PWM, LeftMotorPwm);
+    analogWrite(L_PWM, LeftPwm);
   } 
-  else if (LeftMotorPower < 0) {
+  else if (LeftSpeed < 0) {
     digitalWrite(L_IN1, LOW);
     digitalWrite(L_IN2, HIGH);
-    analogWrite(L_PWM, LeftMotorPwm);
+    analogWrite(L_PWM, LeftPwm);
   } 
   else {
     digitalWrite(L_IN1, HIGH);
@@ -134,8 +119,25 @@ void IronbrickClass::MotorControl(float LeftMotorPower, float RightMotorPower, i
     analogWrite(L_PWM, 0);
   }
 
+  if (RightSpeed > 0) {
+    digitalWrite(R_IN1, HIGH);
+    digitalWrite(R_IN2, LOW);
+    analogWrite(R_PWM, RightPwm);
+  } 
+  else if (RightSpeed < 0) {
+    digitalWrite(R_IN1, LOW);
+    digitalWrite(R_IN2, HIGH);
+    analogWrite(R_PWM, RightPwm);
+  } 
+  else {
+    digitalWrite(R_IN1, HIGH);
+    digitalWrite(R_IN2, HIGH);
+    analogWrite(R_PWM, 0);
+  }
+
   delay(Time);
 }
+
 
 
 

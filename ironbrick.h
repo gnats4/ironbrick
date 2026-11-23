@@ -1,6 +1,8 @@
-#ifndef ironbrick_h 
-#define ironbrick_h	
+#ifndef IRONBRICK_V2_H 
+#define IRONBRICK_V2_H	
 		
+
+#include <Arduino.h>
 
 class IronbrickClass{ 
 	public: 
@@ -17,5 +19,5 @@ class IronbrickClass{
 
 
 
-extern IronbrickClass ironbrick; 
+extern IronbrickClass ironbrick_v2; 
 #endif

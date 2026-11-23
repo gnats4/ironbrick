@@ -1,154 +1,60 @@
-#include "Arduino.h"
-#include "ironbrick.h"
+#include "ironbrick_v2.h"
+#include "Arduino.h>
 
-#define R_IN1 6
-#define R_IN2 7
-#define L_IN1 5
-#define L_IN2 4
-#define R_PWM 11
-#define L_PWM 3
+namespace {
+constexpr byte leftIn1 = 3, leftIn2 = 5;
+constexpr byte rightIn1 = 6, rightIn2 = 11;
 
-
-String IronbrickString; 
-
-
-IronbrickClass::IronbrickClass(){
-	pinMode(R_IN1, OUTPUT);
-	pinMode(R_IN2, OUTPUT);
-	pinMode(L_IN1, OUTPUT);
-	pinMode(L_IN2, OUTPUT);
-	pinMode(R_PWM, OUTPUT);
-	pinMode(L_PWM, OUTPUT);
+void drive(byte in1, byte in2, float percent) {
+    percent = constrain(percent, -100.0f, 100.0f);
+    const byte active = percent < 0 ? in2 : in1;
+    const byte inactive = percent < 0 ? in1 : in2;
+    const float magnitude = percent < 0 ? -percent : percent;
+    digitalWrite(inactive, LOW);
+    analogWrite(active, static_cast<int>(magnitude * 255 / 100));
+}
 }
 
-void IronbrickClass::SETUP(){
+IronbrickClass ironbrick_v2;
 
+IronbrickClass::IronbrickClass() {
+    SETUP();
 }
 
-
-void IronbrickClass::Forward(byte speed, int Time){
-   
-   speed = constrain(speed,0,100);
-   speed = map(speed,0,100,0,255);
-   digitalWrite(L_IN1,HIGH);
-   digitalWrite(L_IN2,LOW);
-   digitalWrite(R_IN1,HIGH);
-   digitalWrite(R_IN2,LOW);
-   analogWrite(R_PWM, speed);
-   analogWrite(L_PWM, speed);
-   delay(Time);
-   
-}
- 
-void IronbrickClass::Backward(byte speed, int Time){
-   
-   speed = constrain(speed,0,100);
-   speed = map(speed,0,100,0,255);
-   digitalWrite(L_IN1,LOW);
-   digitalWrite(L_IN2,HIGH);
-   digitalWrite(R_IN1,LOW);
-   digitalWrite(R_IN2,HIGH);
-   analogWrite(L_PWM, speed);
-   analogWrite(R_PWM, speed);
-   delay(Time);
-   
+void IronbrickClass::SETUP() {
+    pinMode(leftIn1, OUTPUT);
+    pinMode(leftIn2, OUTPUT);
+    pinMode(rightIn1, OUTPUT);
+    pinMode(rightIn2, OUTPUT);
+    StopMotors(0);
 }
 
-void IronbrickClass::Right(byte speed, int Time){
-   
-   speed = constrain(speed,0,100);
-   speed = map(speed,0,100,0,255);
-   digitalWrite(R_IN1,LOW);
-   digitalWrite(R_IN2,HIGH);
-   digitalWrite(L_IN1,HIGH);
-   digitalWrite(L_IN2,LOW);
-   analogWrite(R_PWM, speed);
-   analogWrite(L_PWM, speed);
-   delay(Time);
-   
+void IronbrickClass::MotorControl(float left, float right, int time) {
+    drive(leftIn1, leftIn2, left);
+    drive(rightIn1, rightIn2, right);
+    if (time > 0) delay(time);
 }
 
-void IronbrickClass::Left(byte speed, int Time){
-   
-   speed = constrain(speed,0,100);
-   speed = map(speed,0,100,0,255);
-   digitalWrite(R_IN1,HIGH);
-   digitalWrite(R_IN2,LOW);
-   digitalWrite(L_IN1,LOW);
-   digitalWrite(L_IN2,HIGH);
-   analogWrite(R_PWM, speed);
-   analogWrite(L_PWM, speed);
-   delay(Time);
-   
+void IronbrickClass::Forward(byte speed, int time) {
+    MotorControl(speed, speed, time);
 }
 
-void IronbrickClass::ArcTurn(byte LeftSpeed, byte RightSpeed, int Time){
-	
-	LeftSpeed = constrain(LeftSpeed,0,100);
-	LeftSpeed = map(LeftSpeed,0,100,0,255);
-	RightSpeed = constrain(RightSpeed,0,100);
-	RightSpeed = map(RightSpeed,0,100,0,255);
-	digitalWrite(R_IN1,HIGH);
-	digitalWrite(R_IN2,LOW);
-	digitalWrite(L_IN1,HIGH);
-	digitalWrite(L_IN2,LOW);
-    	analogWrite(R_PWM, RightSpeed);
-    	analogWrite(L_PWM, LeftSpeed);
-    	delay(Time);
-	
+void IronbrickClass::Backward(byte speed, int time) {
+    MotorControl(-speed, -speed, time);
 }
 
-void IronbrickClass::MotorControl(float LeftSpeed, float RightSpeed, int Time) {
-  int LeftPwm = abs(LeftSpeed * 2.55);
-  int RightPwm = abs(RightSpeed * 2.55);
-
-  // Left motor direction and speed
-  if (LeftSpeed > 0) {
-    digitalWrite(L_IN1, HIGH);
-    digitalWrite(L_IN2, LOW);
-    analogWrite(L_PWM, LeftPwm);
-  } 
-  else if (LeftSpeed < 0) {
-    digitalWrite(L_IN1, LOW);
-    digitalWrite(L_IN2, HIGH);
-    analogWrite(L_PWM, LeftPwm);
-  } 
-  else {
-    digitalWrite(L_IN1, HIGH);
-    digitalWrite(L_IN2, HIGH);
-    analogWrite(L_PWM, 0);
-  }
-
-  if (RightSpeed > 0) {
-    digitalWrite(R_IN1, HIGH);
-    digitalWrite(R_IN2, LOW);
-    analogWrite(R_PWM, RightPwm);
-  } 
-  else if (RightSpeed < 0) {
-    digitalWrite(R_IN1, LOW);
-    digitalWrite(R_IN2, HIGH);
-    analogWrite(R_PWM, RightPwm);
-  } 
-  else {
-    digitalWrite(R_IN1, HIGH);
-    digitalWrite(R_IN2, HIGH);
-    analogWrite(R_PWM, 0);
-  }
-
-  delay(Time);
+void IronbrickClass::Left(byte speed, int time) {
+    MotorControl(-speed, speed, time);
 }
 
-
-
-
-void IronbrickClass::StopMotors(int Time) {
-    digitalWrite(R_IN1, LOW); 
-    digitalWrite(R_IN2, LOW);
-    digitalWrite(L_IN1, LOW); 
-    digitalWrite(L_IN2, LOW); 
-    analogWrite(R_PWM, 0);     
-    analogWrite(L_PWM, 0);    
-    delay(Time);              
+void IronbrickClass::Right(byte speed, int time) {
+    MotorControl(speed, -speed, time);
 }
 
-IronbrickClass ironbrick = IronbrickClass();
+void IronbrickClass::ArcTurn(byte left, byte right, int time) {
+    MotorControl(left, right, time);
+}
+
+void IronbrickClass::StopMotors(int time) {
+    MotorControl(0, 0, time);
+}

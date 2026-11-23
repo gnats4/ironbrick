@@ -1,4 +1,4 @@
-#include<ironbrick.h>
+#include<ironbrick_v2.h>
 #define LSens 8
 #define MSens A2 
 #define RSens 9
@@ -47,77 +47,77 @@ void loop() {
       tactic = true;
     }
      if(digitalRead(MSens) == HIGH){
-      ironbrick.Forward(100,1);
+      ironbrick_v2.Forward(100,1);
       LastValue=0;
       lastMoveTime = millis();
     }
     else if(digitalRead(LSens) == HIGH) {
-        ironbrick.Left(80, 1);
+        ironbrick_v2.Left(80, 1);
         LastValue=1;
         lastMoveTime = millis();
      } 
     else  if(digitalRead(RSens) == HIGH) { 
-        ironbrick.Right(80, 1);
+        ironbrick_v2.Right(80, 1);
         LastValue=2;
         lastMoveTime = millis();
      }
     else if (LastValue == 0) {
-      ironbrick.Forward(79, 1);
+      ironbrick_v2.Forward(79, 1);
       lastMoveTime = millis();
     }
     else if(LastValue == 1) {
-      ironbrick.Left(79, 1);
+      ironbrick_v2.Left(79, 1);
       lastMoveTime = millis();
     }
     else if(LastValue == 2){
-      ironbrick.Right(79, 1);
+      ironbrick_v2.Right(79, 1);
       lastMoveTime = millis();
     }
   }
-  ironbrick.StopMotors(10);
+  ironbrick_v2.StopMotors(10);
 }
 
 void handleTactics(){
   if(digitalRead(DS1) == 0 && digitalRead(DS2) == 1 && digitalRead(DS3) == 0){  //Go Forward
-    ironbrick.Forward(230, 80);
-    ironbrick.Backward(100, 10);
-    ironbrick.StopMotors(1);
+    ironbrick_v2.Forward(230, 80);
+    ironbrick_v2.Backward(100, 10);
+    ironbrick_v2.StopMotors(1);
   }
   else if (digitalRead(DS1) == 1 && digitalRead(DS2) == 0 && digitalRead(DS3) == 0 ) { //Left Zig-Zag
-    ironbrick.Right(80,40);
-    ironbrick.StopMotors(20);
-    ironbrick.Forward(100, 90);
-    ironbrick.StopMotors(20);
-    ironbrick.Left(100,110);
-    ironbrick.Forward(100, 70);
-    ironbrick.StopMotors(10);
+    ironbrick_v2.Right(80,40);
+    ironbrick_v2.StopMotors(20);
+    ironbrick_v2.Forward(100, 90);
+    ironbrick_v2.StopMotors(20);
+    ironbrick_v2.Left(100,110);
+    ironbrick_v2.Forward(100, 70);
+    ironbrick_v2.StopMotors(10);
   }
   else if (digitalRead(DS1) == 0 && digitalRead(DS2) == 0 && digitalRead(DS3) == 1 ) { //Right Zig-Zag
 
-    ironbrick.Left(100, 40);
-    ironbrick.StopMotors(20);
-    ironbrick.Forward(100, 90);
-    ironbrick.StopMotors(20);
-    ironbrick.Right(100, 130);
-    ironbrick.Forward(100, 70);
-    ironbrick.StopMotors(10);
+    ironbrick_v2.Left(100, 40);
+    ironbrick_v2.StopMotors(20);
+    ironbrick_v2.Forward(100, 90);
+    ironbrick_v2.StopMotors(20);
+    ironbrick_v2.Right(100, 130);
+    ironbrick_v2.Forward(100, 70);
+    ironbrick_v2.StopMotors(10);
   }
   else if (digitalRead(DS1) == 1 && digitalRead(DS2) == 1 && digitalRead(DS3) == 1 ) { //Right Arc 
-    ironbrick.ArcTurn(50, 100, 150);
-    ironbrick.Backward(100,1);
-    ironbrick.Left(60, 80);
-    ironbrick.StopMotors(2);
+    ironbrick_v2.ArcTurn(50, 100, 150);
+    ironbrick_v2.Backward(100,1);
+    ironbrick_v2.Left(60, 80);
+    ironbrick_v2.StopMotors(2);
   }
   else if (digitalRead(DS1) == 0 && digitalRead(DS2) == 0 && digitalRead(DS3) == 0 ) { //Left Arc
-    ironbrick.ArcTurn(100,50,150);
-    ironbrick.Backward(100, 2);
-    ironbrick.Right(60, 60);
-    ironbrick.StopMotors(2);
+    ironbrick_v2.ArcTurn(100,50,150);
+    ironbrick_v2.Backward(100, 2);
+    ironbrick_v2.Right(60, 60);
+    ironbrick_v2.StopMotors(2);
   }
   else if(digitalRead(DS1) == 0 && digitalRead(DS2) == 1 && digitalRead(DS3) == 1){ //Forward-Wait 3s-LeftArc
-    ironbrick.Forward(230, 50);
-    ironbrick.Backward(100, 10);
-    ironbrick.StopMotors(1);
+    ironbrick_v2.Forward(230, 50);
+    ironbrick_v2.Backward(100, 10);
+    ironbrick_v2.StopMotors(1);
 
     unsigned long time = millis();
     while (millis() - time < 3000){
@@ -125,16 +125,16 @@ void handleTactics(){
         return;
       }
     }
-    ironbrick.ArcTurn(100,50,150);
-    ironbrick.Backward(100, 2);
-    ironbrick.Right(60, 60);
-    ironbrick.Backward(100, 10);
-    ironbrick.StopMotors(1);
+    ironbrick_v2.ArcTurn(100,50,150);
+    ironbrick_v2.Backward(100, 2);
+    ironbrick_v2.Right(60, 60);
+    ironbrick_v2.Backward(100, 10);
+    ironbrick_v2.StopMotors(1);
   }
   else if(digitalRead(DS1)==1 && digitalRead(DS2)==1 && digitalRead(DS3)==0){//Forward-Wait 3s-RightArc
-    ironbrick.Forward(230,50);
-    ironbrick.Backward(100, 10);
-    ironbrick.StopMotors(1);
+    ironbrick_v2.Forward(230,50);
+    ironbrick_v2.Backward(100, 10);
+    ironbrick_v2.StopMotors(1);
 
     unsigned long time = millis();
     while (millis() - time < 3000){
@@ -142,16 +142,16 @@ void handleTactics(){
         return;
       } 
     }
-    ironbrick.ArcTurn(50, 100, 150);
-    ironbrick.Backward(100,1);
-    ironbrick.Left(60, 80);
-    ironbrick.Backward(100,10);
-    ironbrick.StopMotors(1);
+    ironbrick_v2.ArcTurn(50, 100, 150);
+    ironbrick_v2.Backward(100,1);
+    ironbrick_v2.Left(60, 80);
+    ironbrick_v2.Backward(100,10);
+    ironbrick_v2.StopMotors(1);
   }
   else if(digitalRead(DS1)==1 && digitalRead(DS2)==0 && digitalRead(DS3)==1){ //Backward
-    ironbrick.Backward(100, 100);
-    ironbrick.Forward(100,10);
-    ironbrick.StopMotors(1);
+    ironbrick_v2.Backward(100, 100);
+    ironbrick_v2.Forward(100,10);
+    ironbrick_v2.StopMotors(1);
   }
 
 }

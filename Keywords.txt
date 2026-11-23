@@ -1,6 +1,6 @@
 ######################################## Syntax Coloring Map For Ironbrick Board######################################
 ######################################## Datatypes (KEYWORD1) ####################################### 
-ironbrick 	KEYWORD1 
+ironbrick_v2 	KEYWORD1 
 ######################################## Methods and Functions (KEYWORD2)####################################### 
 Forward		KEYWORD2 
 Backward	KEYWORD2
@@ -9,4 +9,5 @@ Left		KEYWORD2
 MotorControl	KEYWORD2
 StopMotors	KEYWORD2
 ArcTurn		KEYWORD2
+
 
